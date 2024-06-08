@@ -11,26 +11,10 @@ class SplashScreen extends StatelessWidget {
     _navigateToHome(context);
     return Scaffold(
       body: Container(
-        color: Colors.blue,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.flash_on,
-                size: 100.0,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Welcome to MyApp',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/splash_screen_backround.png'),
+            fit: BoxFit.cover,
           ),
         ),
       ),
