@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:machine_test_ayurvedic/presentation/pages/patient_list_page.dart';
-// import 'package:machine_test_ayurvedic/presentation/pages/splash_screen.dart';
+import 'package:machine_test_ayurvedic/provider/login_page_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:machine_test_ayurvedic/presentation/pages/login_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => AuthProvider()), // Your UserProvider class
+        // Your SettingsProvider class
+        // Add more providers if needed
+      ],
+      child: MaterialApp(
+        title: 'Ayurvedic Centre App',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: LoginPage(),
       ),
-      home: const PatientListPage(),
     );
   }
 }

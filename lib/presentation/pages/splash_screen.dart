@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:machine_test_ayurvedic/presentation/pages/my_home_page.dart';
+import 'package:machine_test_ayurvedic/presentation/pages/login_page.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
   void _navigateToHome(BuildContext context) {
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MyHomePage()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
     });
   }
