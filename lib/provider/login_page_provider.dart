@@ -36,7 +36,7 @@ class AuthProvider with ChangeNotifier {
         var responseBody = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseBody);
         _token = jsonResponse['token'];
-        print(jsonResponse);
+        // print(jsonResponse);
         _isLoading = false;
         notifyListeners();
         return jsonResponse["status"];
@@ -44,7 +44,7 @@ class AuthProvider with ChangeNotifier {
         return false;
       }
     } catch (error) {
-      print(error.toString());
+      // print(error.toString());
       _isLoading = false;
       notifyListeners();
       return false;

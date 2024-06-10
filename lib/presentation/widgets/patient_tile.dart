@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:machine_test_ayurvedic/models/patient_model.dart';
 
 class PatientTile extends StatelessWidget {
-  const PatientTile({super.key});
+  const PatientTile({super.key, required this.patient, required this.index});
+  final Patient patient;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class PatientTile extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  '1.',
+                  "${index + 1}",
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
@@ -30,7 +33,7 @@ class PatientTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 14.4),
                 Text(
-                  'Vikram Singh',
+                  patient.name,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,

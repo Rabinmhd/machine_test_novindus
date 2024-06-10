@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:machine_test_ayurvedic/presentation/pages/register_page.dart';
 import 'package:machine_test_ayurvedic/presentation/widgets/patient_tile.dart';
+import 'package:machine_test_ayurvedic/provider/patient_list_provider.dart';
+import 'package:provider/provider.dart';
 
 class PatientListPage extends StatelessWidget {
-  const PatientListPage({super.key});
+  final String token;
+
+  const PatientListPage({super.key, required this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +74,7 @@ class PatientListPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -124,7 +127,7 @@ class PatientListPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -132,34 +135,59 @@ class PatientListPage extends StatelessWidget {
             ),
             Expanded(
               flex: 4,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return const PatientTile();
+              child: Consumer<PatientProvider>(
+                builder: (context, snapshot, _) {
+                  if (snapshot.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.errorMessage != null) {
+                    return Center(
+                        child: Text('Error: ${snapshot.errorMessage}'));
+                  } else if (snapshot.patients.isEmpty) {
+                    return const Center(child: Text('No patients found'));
+                  } else {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
+                      itemCount: snapshot.patients.length,
+                      itemBuilder: (context, index) {
+                        return PatientTile(
+                          patient: snapshot.patients[index],
+                          index: index,
+                        );
+                      },
+                    );
+                  }
                 },
-                itemCount: 10,
               ),
             ),
-            Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFF006837),
-              ),
-              child: Center(
-                  child: Text(
-                "Register Now",
-                style: GoogleFonts.getFont(
-                  'Poppins',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                  color: Colors.white,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterPage(),
+                    ));
+              },
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFF006837),
                 ),
-              )),
-            )
+                child: Center(
+                  child: Text(
+                    "Register Now",
+                    style: GoogleFonts.getFont(
+                      'Poppins',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

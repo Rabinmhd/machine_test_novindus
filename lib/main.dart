@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machine_test_ayurvedic/provider/login_page_provider.dart';
+import 'package:machine_test_ayurvedic/provider/patient_list_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:machine_test_ayurvedic/presentation/pages/login_page.dart';
 
@@ -14,8 +15,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             create: (_) => AuthProvider()), // Your UserProvider class
-        // Your SettingsProvider class
-        // Add more providers if needed
+        ChangeNotifierProvider(create: (_) => PatientProvider()),
       ],
       child: MaterialApp(
         title: 'Ayurvedic Centre App',
