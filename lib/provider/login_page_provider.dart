@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+import 'package:http/io_client.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _token;
@@ -10,29 +14,32 @@ class AuthProvider with ChangeNotifier {
   String? get token => _token;
 
   Future<bool> login(String username, String password) async {
-    final url = Uri.parse('https://flutter-amr.noviindus.in/api/Login');
     _isLoading = true;
     notifyListeners();
-    print("clicked");
 
     try {
-      final response = await http.post(
-        url,
-        body: {
-          'username': "test_user",
-          'password': "12345678",
-        },
-      );
-      print(response.body);
+      var url = Uri.parse('https://flutter-amr.noviindus.in/api/Login');
+      var request = http.MultipartRequest('POST', url);
 
-      _isLoading = false;
-      notifyListeners();
+      request.fields['username'] = username;
+      request.fields['password'] = password;
+
+      // Create a custom HttpClient that ignores certificate errors
+      HttpClient httpClient = HttpClient()
+        ..badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+      IOClient ioClient = IOClient(httpClient);
+
+      var response = await ioClient.send(request);
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        _token = responseData['token'];
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+        _token = jsonResponse['token'];
+        print(jsonResponse);
+        _isLoading = false;
         notifyListeners();
-        return true;
+        return jsonResponse["status"];
       } else {
         return false;
       }
